@@ -54,6 +54,7 @@
             coc-emmet
             coc-git
             coc-docker
+            coc-eslint
 
             vim-fugitive
             nerdcommenter
