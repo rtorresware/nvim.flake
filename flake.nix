@@ -36,42 +36,43 @@
           }
         )
       ];
-      myNeovim = pkgs.neovim.override {
-      withNodeJs = true;
-      configure = {
-        customRC = builtins.readFile ./init.vim + ''
-          command! -bang -nargs=* Rg call
-          \ fzf#vim#grep("${pkgs.ripgrep}/bin/rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>),
-          \ 1, fzf#vim#with_preview(), <bang>0)
-        '';
-        packages.my_packages = with pkgs.vimPlugins; {
-          start = [
-            coc-nvim
-            coc-tsserver
-            coc-prettier
-            coc-solargraph
-            coc-json
-            coc-emmet
-            coc-git
-            coc-docker
-            coc-eslint
+      myNeovimUnwrapped = pkgs.neovim.override {
+        withNodeJs = true;
+        configure = {
+          customRC = builtins.readFile ./init.vim;
+          packages.my_packages = with pkgs.vimPlugins; {
+            start = [
+              coc-nvim
+              coc-tsserver
+              coc-prettier
+              coc-solargraph
+              coc-json
+              coc-emmet
+              coc-git
+              coc-docker
+              coc-eslint
 
-            vim-fugitive
-            nerdcommenter
-            vim-sleuth
-            vim-surround
-            fzf-vim
-            vim-signify
-            emmet-vim
-            lightline-vim
-            vim-devicons
-            rainbow_parentheses-vim
-            iceberg-vim
-            vim-polyglot
-          ] ++ themes;
+              vim-fugitive
+              nerdcommenter
+              vim-sleuth
+              vim-surround
+              fzf-vim
+              vim-signify
+              emmet-vim
+              lightline-vim
+              vim-devicons
+              rainbow_parentheses-vim
+              iceberg-vim
+              vim-polyglot
+            ] ++ themes;
+          };
         };
       };
-    };
+      myNeovim = pkgs.writeShellApplication {
+        name = "nvim";
+        runtimeInputs = [ pkgs.ripgrep ];
+        text = ''${myNeovimUnwrapped}/bin/nvim "$@"'';
+      };
     in { defaultPackage = myNeovim; }
   );
 }
