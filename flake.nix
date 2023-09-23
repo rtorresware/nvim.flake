@@ -2,7 +2,7 @@
   description = "Rodolfo's own brand of nvim";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -53,6 +53,7 @@
               coc-eslint
               coc-pyright
 
+              copilot-vim
               vim-fugitive
               nerdcommenter
               vim-sleuth
@@ -71,7 +72,7 @@
       };
       myNeovim = pkgs.writeShellApplication {
         name = "nvim";
-        runtimeInputs = [ pkgs.ripgrep ];
+        runtimeInputs = [ pkgs.ripgrep pkgs.nodejs_16 ];
         text = ''${myNeovimUnwrapped}/bin/nvim "$@"'';
       };
     in { defaultPackage = myNeovim; }
