@@ -24,22 +24,11 @@
             };
           }
         )
-        (
-          pkgs.vimUtils.buildVimPlugin {
-            name = "inspired-github";
-            src = pkgs.fetchFromGitHub {
-              owner = "mvpopuk";
-              repo = "inspired-github.vim";
-              rev = "b0f136335ccf832772c01b4c45270139f0fdc543";
-              sha256 = "EC81QUDBRcw13vQtgTkicVgh4Q34OC/65+75GVGFqq0=";
-            };
-          }
-        )
       ];
       myNeovimUnwrapped = pkgs.neovim.override {
         withNodeJs = true;
         configure = {
-          customRC = builtins.readFile ./init.vim;
+          customRC = builtins.readFile ./init.lua;
           packages.my_packages = with pkgs.vimPlugins; {
             start = [
               coc-nvim
