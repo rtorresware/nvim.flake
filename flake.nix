@@ -41,12 +41,12 @@
         )
         (
           pkgs.vimUtils.buildVimPlugin {
-            name = "rose-pine";
+            name = "inspired-github";
             src = pkgs.fetchFromGitHub {
-              owner = "rose-pine";
-              repo = "neovim";
-              rev = "d149980cfa5cdec487df23b2e9963c3256f3a9f3";
-              sha256 = "FlSqTEQyYm17vR7sNw5hlq2Hpz1cWYr23ARsVNibUBM=";
+              owner = "mvpopuk";
+              repo = "inspired-github.vim";
+              rev = "b0f136335ccf832772c01b4c45270139f0fdc543";
+              sha256 = "EC81QUDBRcw13vQtgTkicVgh4Q34OC/65+75GVGFqq0=";
             };
           }
         )
@@ -59,6 +59,8 @@
           '';
           packages.my_packages = with pkgs.vimPlugins; {
             start = [
+              tokyonight-nvim
+
               nvim-lspconfig
               nvim-cmp
               cmp-nvim-lsp
@@ -74,8 +76,7 @@
               fzf-vim
               vim-signify
               emmet-vim
-              lightline-vim
-              vim-devicons
+              lualine-nvim
 
               nvim-treesitter
               nvim-treesitter-parsers.python

@@ -1,10 +1,6 @@
 vim.o.termguicolors = true
 vim.o.background = 'light'
-vim.cmd('colorscheme lucius')
-
-vim.g.lightline = {
-  colorscheme = 'one'
-}
+vim.cmd('colorscheme inspired-github')
 vim.g.scrollfix = 50
 vim.g.mapleader = ' '
 
@@ -35,6 +31,11 @@ vim.api.nvim_set_keymap('n', '<Leader>f', ':GFiles<CR>', { noremap = true, silen
 vim.api.nvim_set_keymap('n', '<Leader>af', ':Files<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<Leader>s', ':Rg<CR>', { noremap = true, silent = true })
 
+require('lualine').setup({
+  options = {
+    icons_enabled = false,
+  }
+})
 local lspconfig = require('lspconfig')
 local cmp = require'cmp'
 
