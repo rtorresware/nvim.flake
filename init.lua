@@ -58,6 +58,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+require("copilot").setup({
+  suggestion = { enabled = false },
+  panel = { enabled = false },
+})
+require("copilot_cmp").setup()
 cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -67,6 +72,7 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true }), 
   }),
   sources = cmp.config.sources({
+    { name = 'copilot' },
     { name = 'nvim_lsp' },
   }, {
     { name = 'buffer' },

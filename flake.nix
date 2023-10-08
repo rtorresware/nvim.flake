@@ -67,8 +67,9 @@
               cmp-buffer
               cmp-path
               cmp-cmdline
+              copilot-cmp
+              copilot-lua
 
-              copilot-vim
               vim-fugitive
               nerdcommenter
               vim-sleuth
@@ -99,7 +100,6 @@
         name = "nvim";
         runtimeInputs = with pkgs; [
           ripgrep
-          nodejs_16
 
           nodePackages.vscode-langservers-extracted
           nodePackages.typescript-language-server
