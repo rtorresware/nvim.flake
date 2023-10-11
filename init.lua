@@ -97,7 +97,7 @@ cmp.setup.cmdline(':', {
 
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'pyright', 'tsserver', 'nil_ls', 'tailwindcss' }
+local servers = { 'pyright', 'tsserver', 'nil_ls', 'tailwindcss', 'html' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
