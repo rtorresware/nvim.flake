@@ -3,13 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
+      pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
       tailwindLsp = pkgs.buildNpmPackage {
         name = "_at_tailwindcss_language_server";
         packageName = "@tailwindcss/language-server";
@@ -30,12 +32,12 @@
       themes = [
         (
           pkgs.vimUtils.buildVimPlugin {
-            name = "vim-lucius";
+            name = "rose-pine";
             src = pkgs.fetchFromGitHub {
-              owner = "jonathanfilip";
-              repo = "vim-lucius";
-              rev = "b5dea9864ae64714da4635993ad2fc2703e7c832";
-              sha256 = "FlSqTEQyYm17vR7sNw5hlq2Hpz1cWYr23ARsVNibUBM=";
+              owner = "rose-pine";
+              repo = "neovim";
+              rev = "e29002cbee4854a9c8c4b148d8a52fae3176070f";
+              sha256 = "bzh6X1pJPe2CM5qDTvadGHD55COTtri+OWzIFlJv9qU=";
             };
           }
         )
@@ -51,6 +53,9 @@
           }
         )
       ];
+      treesitter = pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
+        python ruby htmldjango html javascript typescript tsx svelte nix json dockerfile toml
+      ]);
       myNeovimUnwrapped = pkgs.neovim.override {
         withNodeJs = true;
         configure = {
@@ -70,6 +75,7 @@
               copilot-cmp
               copilot-lua
 
+              luasnip
               vim-fugitive
               nerdcommenter
               vim-sleuth
@@ -78,20 +84,7 @@
               vim-signify
               emmet-vim
               lualine-nvim
-
-              nvim-treesitter
-              nvim-treesitter-parsers.python
-              nvim-treesitter-parsers.ruby
-              nvim-treesitter-parsers.htmldjango
-              nvim-treesitter-parsers.html
-              nvim-treesitter-parsers.javascript
-              nvim-treesitter-parsers.typescript
-              nvim-treesitter-parsers.tsx
-              nvim-treesitter-parsers.svelte
-              nvim-treesitter-parsers.nix
-              nvim-treesitter-parsers.json
-              nvim-treesitter-parsers.dockerfile
-              nvim-treesitter-parsers.toml
+              treesitter
             ] ++ themes;
           };
         };
@@ -106,6 +99,8 @@
           nodePackages.pyright
           nil
           tailwindLsp
+
+          pkgs-unstable.ruby-lsp
         ];
         text = ''${myNeovimUnwrapped}/bin/nvim "$@"'';
       };
