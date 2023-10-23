@@ -64,6 +64,8 @@
           '';
           packages.my_packages = with pkgs.vimPlugins; {
             start = [
+              pkgs-unstable.vimPlugins.efmls-configs-nvim
+
               tokyonight-nvim
 
               nvim-lspconfig
@@ -98,9 +100,11 @@
           nodePackages.typescript-language-server
           nodePackages.pyright
           nil
+          pkgs-unstable.ruby-lsp
           tailwindLsp
 
-          pkgs-unstable.ruby-lsp
+          efm-langserver
+          python311Packages.black
         ];
         text = ''${myNeovimUnwrapped}/bin/nvim "$@"'';
       };

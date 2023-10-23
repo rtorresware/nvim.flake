@@ -109,7 +109,7 @@ cmp.setup.cmdline(':', {
 
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'pyright', 'tsserver', 'nil_ls', 'tailwindcss', 'ruby_ls' }
+local servers = { 'pyright', 'tsserver', 'nil_ls', 'tailwindcss', 'ruby_ls', 'ruby_ls' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
@@ -121,3 +121,32 @@ lspconfig['html'].setup {
   capabilities = capabilities,
   filetypes = { 'html', 'htmldjango' },
 }
+
+-- Formatting
+local eslint = require('efmls-configs.linters.eslint')
+local prettier = require('efmls-configs.formatters.prettier')
+local black = require('efmls-configs.formatters.black')
+local languages = {
+  typescript = { eslint, prettier },
+  typescriptreact = { eslint, prettier },
+  javascript = { eslint, prettier },
+  javascriptreact = { eslint, prettier },
+  python = { black },
+}
+
+local efmls_config = {
+  filetypes = vim.tbl_keys(languages),
+  settings = {
+    rootMarkers = { '.git/' },
+    languages = languages,
+  },
+  init_options = {
+    documentFormatting = true,
+    documentRangeFormatting = true,
+  },
+}
+
+lspconfig.efm.setup(vim.tbl_extend('force', efmls_config, {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}))
