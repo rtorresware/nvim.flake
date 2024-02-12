@@ -123,6 +123,7 @@ lspconfig['html'].setup {
 }
 
 -- Formatting
+local djlint = require('efmls-configs.linters.djlint')
 local eslint = require('efmls-configs.linters.eslint')
 local prettier = require('efmls-configs.formatters.prettier')
 local black = require('efmls-configs.formatters.black')
@@ -132,6 +133,7 @@ local languages = {
   javascript = { eslint, prettier },
   javascriptreact = { eslint, prettier },
   python = { black },
+  htmldjango = { djlint },
 }
 
 local efmls_config = {

@@ -2,33 +2,14 @@
   description = "Rodolfo's own brand of nvim";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.05-darwin";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
-      pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
-      tailwindLsp = pkgs.buildNpmPackage {
-        name = "_at_tailwindcss_language_server";
-        packageName = "@tailwindcss/language-server";
-        version = "0.0.13";
-
-        src = pkgs.fetchurl {
-          url = "https://registry.npmjs.org/@tailwindcss/language-server/-/language-server-0.0.13.tgz";
-          sha512 = "C5OKPG8F6IiSbiEgXMxskMsOnbzSGnZvKBxEGHUhBGIB/tlX5rc7Iv/prdwYrUj2Swhjj5TrXuxZgACo+blB4A==";
-        };
-
-        npmDepsHash = "sha256-AaAil2VdYp7OAM5QQ9cwyLEltwrfOrSrMT9/HpHowBY=";
-        buildInputs = [ pkgs.nodejs ];
-        dontNpmBuild = true;
-        postPatch = ''
-          cp ${./tailwind-package-lock.json} ./package-lock.json
-        '';
-      };
       themes = [
         (
           pkgs.vimUtils.buildVimPlugin {
@@ -64,7 +45,7 @@
           '';
           packages.my_packages = with pkgs.vimPlugins; {
             start = [
-              pkgs-unstable.vimPlugins.efmls-configs-nvim
+              efmls-configs-nvim
 
               tokyonight-nvim
 
@@ -96,12 +77,11 @@
         runtimeInputs = with pkgs; [
           ripgrep
 
+          tailwindcss-language-server
           nodePackages.vscode-langservers-extracted
           nodePackages.typescript-language-server
           nodePackages.pyright
           nil
-          pkgs-unstable.ruby-lsp
-          tailwindLsp
 
           efm-langserver
           python311Packages.black
