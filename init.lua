@@ -109,7 +109,7 @@ cmp.setup.cmdline(':', {
 
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'pyright', 'tsserver', 'nil_ls', 'tailwindcss', 'ruby_ls', 'ruby_ls' }
+local servers = { 'pyright', 'tsserver', 'nil_ls', 'tailwindcss', 'rubocop', 'ruby_lsp' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
@@ -127,6 +127,7 @@ local djlint = require('efmls-configs.linters.djlint')
 local eslint = require('efmls-configs.linters.eslint')
 local prettier = require('efmls-configs.formatters.prettier')
 local black = require('efmls-configs.formatters.black')
+local rubocop = require('efmls-configs.linters.rubocop')
 local languages = {
   typescript = { eslint, prettier },
   typescriptreact = { eslint, prettier },
@@ -134,6 +135,7 @@ local languages = {
   javascriptreact = { eslint, prettier },
   python = { black },
   htmldjango = { djlint },
+  ruby = { rubocop },
 }
 
 local efmls_config = {
