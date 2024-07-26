@@ -1,6 +1,6 @@
 vim.o.termguicolors = true
 vim.o.background = 'light'
-vim.cmd('colorscheme inspired-github')
+vim.cmd('colorscheme rose-pine')
 vim.g.scrollfix = 50
 vim.g.mapleader = ' '
 
@@ -58,32 +58,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
-require("copilot").setup({
-  suggestion = { enabled = false },
-  panel = { enabled = false },
-})
-require("copilot_cmp").setup()
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-    end,
-  },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), 
-  }),
-  sources = cmp.config.sources({
-    { name = 'copilot' },
-    { name = 'nvim_lsp' },
-  }, {
-    { name = 'buffer' },
-  })
-})
-
 cmp.setup.cmdline({ '/', '?' }, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = {
@@ -109,7 +83,7 @@ cmp.setup.cmdline(':', {
 
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'pyright', 'tsserver', 'nil_ls', 'tailwindcss', 'rubocop', 'ruby_lsp' }
+local servers = { 'pyright', 'tsserver', 'nil_ls', 'tailwindcss', 'ruby_lsp' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,

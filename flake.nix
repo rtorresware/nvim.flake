@@ -10,30 +10,6 @@
     flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = nixpkgs.legacyPackages.${system};
-      themes = [
-        (
-          pkgs.vimUtils.buildVimPlugin {
-            name = "rose-pine";
-            src = pkgs.fetchFromGitHub {
-              owner = "rose-pine";
-              repo = "neovim";
-              rev = "e29002cbee4854a9c8c4b148d8a52fae3176070f";
-              sha256 = "bzh6X1pJPe2CM5qDTvadGHD55COTtri+OWzIFlJv9qU=";
-            };
-          }
-        )
-        (
-          pkgs.vimUtils.buildVimPlugin {
-            name = "inspired-github";
-            src = pkgs.fetchFromGitHub {
-              owner = "mvpopuk";
-              repo = "inspired-github.vim";
-              rev = "b0f136335ccf832772c01b4c45270139f0fdc543";
-              sha256 = "EC81QUDBRcw13vQtgTkicVgh4Q34OC/65+75GVGFqq0=";
-            };
-          }
-        )
-      ];
       treesitter = pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
         python ruby htmldjango html javascript typescript tsx svelte nix json dockerfile toml
       ]);
@@ -55,8 +31,6 @@
               cmp-buffer
               cmp-path
               cmp-cmdline
-              copilot-cmp
-              copilot-lua
 
               luasnip
               vim-fugitive
@@ -68,7 +42,8 @@
               emmet-vim
               lualine-nvim
               treesitter
-            ] ++ themes;
+              rose-pine
+            ];
           };
         };
       };
@@ -78,13 +53,13 @@
           ripgrep
 
           tailwindcss-language-server
-          nodePackages.vscode-langservers-extracted
-          nodePackages.typescript-language-server
-          nodePackages.pyright
+          vscode-langservers-extracted
+          typescript-language-server
+          pyright
           nil
 
           efm-langserver
-          python311Packages.black
+          black
         ];
         text = ''${myNeovimUnwrapped}/bin/nvim "$@"'';
       };
