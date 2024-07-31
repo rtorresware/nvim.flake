@@ -58,6 +58,27 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), 
+  }),
+  sources = cmp.config.sources({
+    { name = 'copilot' },
+    { name = 'nvim_lsp' },
+  }, {
+    { name = 'buffer' },
+  })
+})
+
 cmp.setup.cmdline({ '/', '?' }, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = {
@@ -90,26 +111,30 @@ for _, lsp in ipairs(servers) do
     capabilities = capabilities,
   }
 end
-lspconfig['html'].setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { 'html', 'htmldjango' },
-}
 
 -- Formatting
 local djlint = require('efmls-configs.linters.djlint')
 local eslint = require('efmls-configs.linters.eslint')
 local prettier = require('efmls-configs.formatters.prettier')
 local black = require('efmls-configs.formatters.black')
-local rubocop = require('efmls-configs.linters.rubocop')
+
+local fs = require('efmls-configs.fs')
+local djlintFormat = {
+  formatCommand = string.format(
+    "%s --quiet --reformat -",
+    fs.executable('djlint')
+  ),
+  formatCanRange = false,
+  formatStdin = true,
+}
+
 local languages = {
   typescript = { eslint, prettier },
   typescriptreact = { eslint, prettier },
   javascript = { eslint, prettier },
   javascriptreact = { eslint, prettier },
   python = { black },
-  htmldjango = { djlint },
-  ruby = { rubocop },
+  htmldjango = { djlint, djlintFormat },
 }
 
 local efmls_config = {

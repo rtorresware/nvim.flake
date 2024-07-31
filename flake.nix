@@ -23,8 +23,6 @@
             start = [
               efmls-configs-nvim
 
-              tokyonight-nvim
-
               nvim-lspconfig
               nvim-cmp
               cmp-nvim-lsp
@@ -41,8 +39,9 @@
               vim-signify
               emmet-vim
               lualine-nvim
-              treesitter
               rose-pine
+
+              treesitter
             ];
           };
         };
@@ -60,6 +59,7 @@
 
           efm-langserver
           black
+          djlint
         ];
         text = ''${myNeovimUnwrapped}/bin/nvim "$@"'';
       };
