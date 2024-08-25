@@ -117,6 +117,7 @@ local djlint = require('efmls-configs.linters.djlint')
 local eslint = require('efmls-configs.linters.eslint')
 local prettier = require('efmls-configs.formatters.prettier')
 local black = require('efmls-configs.formatters.black')
+local fixjson = require('efmls-configs.formatters.fixjson')
 
 local fs = require('efmls-configs.fs')
 local djlintFormat = {
@@ -135,6 +136,7 @@ local languages = {
   javascriptreact = { eslint, prettier },
   python = { black },
   htmldjango = { djlint, djlintFormat },
+  json = { fixjson },
 }
 
 local efmls_config = {

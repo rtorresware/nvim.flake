@@ -60,6 +60,7 @@
           efm-langserver
           black
           djlint
+          fixjson
         ];
         text = ''${myNeovimUnwrapped}/bin/nvim "$@"'';
       };
