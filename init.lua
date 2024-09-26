@@ -58,6 +58,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true,
+  },
+}
+
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -104,13 +113,33 @@ cmp.setup.cmdline(':', {
 
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'pyright', 'tsserver', 'nil_ls', 'tailwindcss', 'ruby_lsp' }
+local servers = { 'pyright', 'tsserver', 'nil_ls' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,
   }
 end
+
+lspconfig.elixirls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { "elixir-ls" },
+  settings = { elixirLS = { dialyzerEnabled = false } },
+}
+
+lspconfig.tailwindcss.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "html", "elixir", "eelixir", "heex" },
+  init_options = {
+    userLanguages = {
+      elixir = "html-eex",
+      eelixir = "html-eex",
+      heex = "html-eex",
+    },
+  },
+}
 
 -- Formatting
 local djlint = require('efmls-configs.linters.djlint')

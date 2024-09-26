@@ -11,7 +11,7 @@
     let
       pkgs = nixpkgs.legacyPackages.${system};
       treesitter = pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
-        python ruby htmldjango html javascript typescript tsx svelte nix json dockerfile toml
+        python ruby htmldjango html javascript typescript tsx svelte nix json dockerfile toml elixir heex
       ]);
       myNeovimUnwrapped = pkgs.neovim.override {
         withNodeJs = true;
@@ -61,6 +61,7 @@
           black
           djlint
           fixjson
+          elixir-ls
         ];
         text = ''${myNeovimUnwrapped}/bin/nvim "$@"'';
       };
