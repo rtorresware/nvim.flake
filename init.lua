@@ -113,13 +113,30 @@ cmp.setup.cmdline(':', {
 
 -- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'pyright', 'tsserver', 'nil_ls' }
+local servers = { 'pyright', 'ts_ls' }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,
   }
 end
+
+lspconfig.nixd.setup({
+  settings = {
+    nixd = {
+      formatting = {
+        command = { "nixfmt" },
+      },
+    },
+  },
+})
+
+lspconfig.elixirls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { "elixir-ls" },
+  settings = { elixirLS = { dialyzerEnabled = false } },
+}
 
 lspconfig.elixirls.setup {
   on_attach = on_attach,
