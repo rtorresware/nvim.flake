@@ -7,10 +7,7 @@
   };
 
   outputs =
-    {
-      nixpkgs,
-      flake-utils,
-    }:
+    { nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
@@ -39,30 +36,30 @@
             customRC = ''
               luafile ${./init.lua}
             '';
-            packages.my_packages = with pkgs.vimPlugins; {
-              start = [
-                efmls-configs-nvim
+            packages.my_packages = {
+              start =
+                [ treesitter ]
+                ++ (with pkgs.vimPlugins; [
+                  efmls-configs-nvim
 
-                nvim-lspconfig
-                nvim-cmp
-                cmp-nvim-lsp
-                cmp-buffer
-                cmp-path
-                cmp-cmdline
+                  nvim-lspconfig
+                  nvim-cmp
+                  cmp-nvim-lsp
+                  cmp-buffer
+                  cmp-path
+                  cmp-cmdline
 
-                luasnip
-                vim-fugitive
-                nerdcommenter
-                vim-sleuth
-                vim-surround
-                fzf-vim
-                vim-signify
-                emmet-vim
-                lualine-nvim
-                rose-pine
-
-                treesitter
-              ];
+                  luasnip
+                  vim-fugitive
+                  nerdcommenter
+                  vim-sleuth
+                  vim-surround
+                  fzf-vim
+                  vim-signify
+                  emmet-vim
+                  lualine-nvim
+                  rose-pine
+                ]);
             };
           };
         };
