@@ -2,7 +2,7 @@
   description = "Rodolfo's own brand of nvim";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -70,7 +70,7 @@
 
             tailwindcss-language-server
             vscode-langservers-extracted
-            typescript-language-server
+            nodePackages.typescript-language-server
             pyright
             nixd
             nixfmt-rfc-style
@@ -78,7 +78,7 @@
             efm-langserver
             black
             djlint
-            fixjson
+            nodePackages.fixjson
           ];
           text = ''${myNeovimUnwrapped}/bin/nvim "$@"'';
         };
