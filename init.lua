@@ -137,31 +137,17 @@ lspconfig.elixirls.setup {
   cmd = { "elixir-ls" },
   settings = { elixirLS = { dialyzerEnabled = false } },
 }
-
-lspconfig.elixirls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  cmd = { "elixir-ls" },
-  settings = { elixirLS = { dialyzerEnabled = false } },
-}
-
 lspconfig.tailwindcss.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  filetypes = { "html", "elixir", "eelixir", "heex" },
-  init_options = {
-    userLanguages = {
-      elixir = "html-eex",
-      eelixir = "html-eex",
-      heex = "html-eex",
-    },
-  },
   settings = {
     tailwindCSS = {
+      includeLanguages = {
+        elixir = "html",
+        eelixir = "html",
+      },
       experimental = {
-        classRegex = {
-          'class[:]\\s*"([^"]*)"',
-        },
+        configFile = os.getenv("TAILWINDCSS_CONFIG_PATH") or "tailwind.config.js"
       },
     },
   },
