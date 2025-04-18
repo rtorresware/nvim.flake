@@ -1,5 +1,4 @@
 vim.o.termguicolors = true
-vim.o.background = 'light'
 vim.cmd('colorscheme rose-pine')
 vim.g.scrollfix = 50
 vim.g.mapleader = ' '
@@ -200,3 +199,28 @@ lspconfig.efm.setup(vim.tbl_extend('force', efmls_config, {
   on_attach = on_attach,
   capabilities = capabilities,
 }))
+
+local function is_macos_dark_mode()
+  -- Check if on macOS
+  local is_mac = vim.fn.has('mac') == 1
+  if not is_mac then
+    return false -- Default to light on non-macOS systems
+  end
+  
+  -- Use system command to check macOS appearance
+  local handle = io.popen('defaults read -g AppleInterfaceStyle 2>/dev/null')
+  if handle then
+    local result = handle:read("*a")
+    handle:close()
+    return result:match("Dark") ~= nil
+  end
+  
+  return false -- Default to light if we can't determine
+end
+
+-- Set background based on macOS appearance
+if is_macos_dark_mode() then
+  vim.opt.background = "dark"
+else
+  vim.opt.background = "light"
+end
