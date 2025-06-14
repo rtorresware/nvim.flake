@@ -138,7 +138,7 @@ lspconfig.elixirls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   cmd = { "elixir-ls" },
-  settings = { elixirLS = { dialyzerEnabled = false } },
+  settings = { elixirLS = { dialyzerEnabled = false, enableFormatter = false } },
 }
 lspconfig.tailwindcss.setup {
   on_attach = on_attach,
@@ -173,6 +173,15 @@ local djlintFormat = {
   formatStdin = true,
 }
 
+local mixFormat = {
+  formatCommand = string.format(
+    '%s format --stdin-filename "${INPUT}" -',
+    fs.executable('mix')
+  ),
+  formatCanRange = false,
+  formatStdin = true,
+}
+
 local languages = {
   typescript = { eslint, prettier },
   typescriptreact = { eslint, prettier },
@@ -181,6 +190,8 @@ local languages = {
   python = { black },
   htmldjango = { djlint, djlintFormat },
   json = { fixjson },
+  eelixir = { mixFormat },
+  elixir = { mixFormat },
 }
 
 local efmls_config = {
