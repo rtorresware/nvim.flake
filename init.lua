@@ -35,7 +35,6 @@ require('lualine').setup({
     icons_enabled = false,
   }
 })
-local lspconfig = require('lspconfig')
 local cmp = require'cmp'
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -114,17 +113,15 @@ cmp.setup.cmdline(':', {
   })
 })
 
--- Set up lspconfig.
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local servers = { 'pyright', 'ts_ls' }
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
+  vim.lsp.config(lsp, {
     on_attach = on_attach,
     capabilities = capabilities,
-  }
+  })
 end
-
-lspconfig.nixd.setup({
+vim.lsp.config('nixd', {
   settings = {
     nixd = {
       formatting = {
@@ -134,27 +131,21 @@ lspconfig.nixd.setup({
   },
 })
 
-lspconfig.elixirls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  cmd = { "elixir-ls" },
-  settings = { elixirLS = { dialyzerEnabled = false, enableFormatter = false } },
-}
-lspconfig.tailwindcss.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
+vim.lsp.enable('elixirls')
+vim.lsp.config('elixirls', {
+    cmd = { "elixir-ls" };
+})
+
+vim.lsp.enable('tailwindcss')
+vim.lsp.config('tailwindcss', {
   settings = {
     tailwindCSS = {
-      includeLanguages = {
-        elixir = "html",
-        eelixir = "html",
-      },
       experimental = {
         configFile = os.getenv("TAILWINDCSS_CONFIG_PATH") or "tailwind.config.js"
       },
     },
   },
-}
+})
 
 -- Formatting
 local djlint = require('efmls-configs.linters.djlint')
@@ -206,10 +197,12 @@ local efmls_config = {
   },
 }
 
-lspconfig.efm.setup(vim.tbl_extend('force', efmls_config, {
-  on_attach = on_attach,
-  capabilities = capabilities,
-}))
+vim.lsp.config('efm', {
+  vim.tbl_extend('force', efmls_config, {
+    on_attach = on_attach,
+    capabilities = capabilities,
+  })
+})
 
 local function is_macos_dark_mode()
   -- Check if on macOS
