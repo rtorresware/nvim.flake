@@ -113,14 +113,7 @@ cmp.setup.cmdline(':', {
   })
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local servers = { 'pyright', 'ts_ls' }
-for _, lsp in ipairs(servers) do
-  vim.lsp.config(lsp, {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  })
-end
+vim.lsp.enable('ts_ls')
 vim.lsp.config('nixd', {
   settings = {
     nixd = {
@@ -164,15 +157,6 @@ local djlintFormat = {
   formatStdin = true,
 }
 
-local mixFormat = {
-  formatCommand = string.format(
-    '%s format --stdin-filename "${INPUT}" -',
-    fs.executable('mix')
-  ),
-  formatCanRange = false,
-  formatStdin = true,
-}
-
 local languages = {
   typescript = { eslint, prettier },
   typescriptreact = { eslint, prettier },
@@ -181,8 +165,6 @@ local languages = {
   python = { black },
   htmldjango = { djlint, djlintFormat },
   json = { fixjson },
-  eelixir = { mixFormat },
-  elixir = { mixFormat },
 }
 
 local efmls_config = {
